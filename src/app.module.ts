@@ -6,6 +6,8 @@ import { CardController } from './controllers/card/card.controller';
 import { PokemonTcgPocketApiService } from './services/pokemon-tcg-pocket-api/pokemon-tcg-pocket-api.service';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dataSourceOptions } from './data-source';
 
 @Module({
   imports: [
@@ -13,6 +15,7 @@ import { HttpModule } from '@nestjs/axios';
       isGlobal: true,
       envFilePath: '.env',
     }),
+    TypeOrmModule.forRoot(dataSourceOptions),
     HttpModule,
   ],
   controllers: [AppController, SetController, CardController],
