@@ -8,6 +8,8 @@ import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './data-source';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { CardScannerController } from './controllers/card-scanner/card-scanner.controller';
 
 @Module({
   imports: [
@@ -17,8 +19,20 @@ import { dataSourceOptions } from './data-source';
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     HttpModule,
+    ClientsModule.register([
+      {
+        name: 'CARD_SCANNER_SERVICE',
+        transport: Transport.TCP,
+        options: { port: 3001 },
+      },
+    ]),
   ],
-  controllers: [AppController, SetController, CardController],
+  controllers: [
+    AppController,
+    SetController,
+    CardController,
+    CardScannerController,
+  ],
   providers: [AppService, PokemonTcgPocketApiService],
 })
 export class AppModule {}
